@@ -25,7 +25,11 @@ As you can see, this will be a ongoing project and will grow continusly as I lea
 <!-- GETTING STARTED -->
 # Getting Started
 
-  This is still WIP.
+  This is still WIP (windows only)：
+
+  - First, you will need Visual Studio 2022 installed, together with C++ environment support
+  - Run **\<solution\>**.sln using VS 2022
+  - Build & Run the program
 
 ## Installation
 
