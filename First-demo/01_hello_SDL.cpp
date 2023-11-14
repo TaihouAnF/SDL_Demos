@@ -2,24 +2,45 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <iostream>
+#include <string>
 
 // Screen dimension constants
-const int screen_width = 2149;
-const int screen_height = 1175;
+const int screen_width = 1920;
+const int screen_height = 1080;
+
+// Enum constants for key press
+enum KeyPress {
+	KEY_DEFAULT,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_TOTAL_AMOUNT
+};
 
 // Starts SDL
 bool init();
+
 // Load Media
 bool loadMedia();
+
 // Free Memory and 
 void close();
 
+// Load multiple surfaces and return the head of the array
+SDL_Surface* loadSurfaces(std::string path);
+
 // The window we'll be rendering to
 SDL_Window* window = NULL;
+
 // The surface/canvas we put into the window
 SDL_Surface* screenSurface = NULL;
-// The image we load 
-SDL_Surface* image = NULL;
+
+// An array for storing images 
+SDL_Surface* keyPressSurfaces[KEY_TOTAL_AMOUNT];
+
+// The image we currently see
+SDL_Surface* currentImage = NULL;
 
 bool init() {
 	// A flag indicating initialization
