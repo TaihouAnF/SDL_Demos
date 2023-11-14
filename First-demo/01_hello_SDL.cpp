@@ -84,28 +84,29 @@ int main( int argc, char* args[] )
 			printf("Failed to Load media.\n");
 		}
 		else {
-			// Apply the image
-			SDL_BlitSurface(image, NULL, screenSurface, NULL);
-		/**
-			By LazyFoo :
-			By default, most rendering systems out there are double buffered. These two buffers are the front and back buffer.
-			When you make draw calls like SDL_BlitSurface, you render to the back buffer. What you see on the screen is the front buffer. 
-			The reason we do this is because most frames require drawing multiple objects to the screen. 
-			If we only had a front buffer, we would be able to see the frame as things are being drawn to it which means we would see unfinished frames. 
-			So what we do is draw everything to the back buffer first and once we're done we swap the back and front buffer so now the user can see the finished frame.
-		*/
-			// Put the image on the canvas from buffer, update the frame
-			SDL_UpdateWindowSurface(window);
-			
-			// Keep the window up
+			// A event variable to keep track of event
 			SDL_Event event;
 			bool quit = false;
 			while (!quit) {
+				// Application event tracking, Handle event on queue.
+				// It keeps processing, retrieving event from the queue until it is empty
 				while (SDL_PollEvent(&event)) {
 					if (event.type == SDL_QUIT) {
 						quit = true;
 					}
 				}
+				// Apply the image
+				SDL_BlitSurface(image, NULL, screenSurface, NULL);
+				/**
+					By LazyFoo :
+					By default, most rendering systems out there are double buffered. These two buffers are the front and back buffer.
+					When you make draw calls like SDL_BlitSurface, you render to the back buffer. What you see on the screen is the front buffer.
+					The reason we do this is because most frames require drawing multiple objects to the screen.
+					If we only had a front buffer, we would be able to see the frame as things are being drawn to it which means we would see unfinished frames.
+					So what we do is draw everything to the back buffer first and once we're done we swap the back and front buffer so now the user can see the finished frame.
+				*/
+				// Put the image on the canvas from buffer, update the frame
+				SDL_UpdateWindowSurface(window);
 			}
 		}
 	}
