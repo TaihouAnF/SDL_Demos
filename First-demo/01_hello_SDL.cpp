@@ -21,13 +21,24 @@ enum KeyPress {
 // Starts SDL
 bool init();
 
-// Load Media
+/**
+ * Load media files to the program.
+ *
+ * @return boolean indicating whether loaded succesfully.
+ * 
+ */
 bool loadMedia();
 
 // Free Memory and 
 void close();
 
-// Load multiple surfaces and return the head of the array
+/**
+ * Load bmp file into a SDL surface.
+ * 
+ * @param string that represent the path of the file.
+ * @return pointer to the SDL surface we just loaded, 
+ *		or Nullptr if failed to load.
+ */
 SDL_Surface* loadSurfaces(std::string path);
 
 // The window we'll be rendering to
@@ -61,6 +72,17 @@ bool init() {
 		}
 	}
 	return success;
+}
+
+SDL_Surface* loadSurface(std::string path) {
+	// Load the surface like we did previously, 
+	// we need c_str here because SDL only supports C style string.
+	SDL_Surface* loaded = SDL_LoadBMP(path.c_str());
+
+	if (loaded == nullptr) {
+		std::cout << "SDL failed to load BMP, exit with code: " << SDL_GetError() << ".\n";
+	}
+	return loaded;
 }
 
 bool loadMedia() {
