@@ -3,19 +3,29 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 // Screen dimension constants
-const int screen_width = 1920;
-const int screen_height = 1080;
+const int screen_width = 1000;
+const int screen_height = 1000;
 
 // Enum constants for key press
 enum KeyPress {
-	KEY_DEFAULT,
-	KEY_UP,
-	KEY_DOWN,
-	KEY_LEFT,
-	KEY_RIGHT,
-	KEY_TOTAL_AMOUNT
+	KEY_DEFAULT,	// 0
+	KEY_UP,			// 1
+	KEY_DOWN,		// 2
+	KEY_LEFT,		// 3
+	KEY_RIGHT,		// 4
+	KEY_TOTAL_AMOUNT// 5
+};
+
+// A collection of string for pictures, only for this exercise
+std::vector<std::string> paths = {
+	"temp/test_0.bmp",
+	"temp/test_1.bmp",
+	"temp/test_2.bmp",
+	"temp/test_3.bmp",
+	"temp/test_4.bmp"
 };
 
 // Starts SDL
@@ -39,7 +49,7 @@ void close();
  * @return pointer to the SDL surface we just loaded, 
  *		or Nullptr if failed to load.
  */
-SDL_Surface* loadSurfaces(std::string path);
+SDL_Surface* loadSurface(std::string path);
 
 // The window we'll be rendering to
 SDL_Window* window = NULL;
@@ -89,24 +99,30 @@ bool loadMedia() {
 	// Similar to init(), we need a flag here
 	bool success = true;
 
-	image = SDL_LoadBMP("temp/test.bmp");
-	if (image == NULL) {
-		std::cout << "SDL failed to load BMP, exit with code: " << SDL_GetError() << ".\n";
-		success = false;
+	// Iterating through the array and assign each of them a picture,
+	// paths is the array of string for path of images
+	for (int i = 0; i < KEY_TOTAL_AMOUNT; ++i) {
+		keyPressSurfaces[i] = loadSurface(paths[i]);
+		if (keyPressSurfaces[i] == NULL) {
+			std::cout << "SDL failed to load BMP, exit with code: " << SDL_GetError() << ".\n";
+			success = false;
+			break;
+		}
 	}
-	
+
 	return success;
 }
 
 void close() {
 	
-	// Deallocate surface
-	SDL_FreeSurface(image);
-	image = NULL;
-
+	// Deallocate surfaces
+	for (int i = 0; i < KEY_TOTAL_AMOUNT; ++i) {
+		SDL_FreeSurface(keyPressSurfaces[i]);
+		keyPressSurfaces[i] = NULL;
+	}
+	
 	// Don't worry about the surface here, Destroy window would take care of it
-	/*SDL_FreeSurface(screenSurface);
-	screenSurface = NULL;*/
+	/*SDL_FreeSurface(screenSurface); screenSurface = NULL;*/
 
 	// Clean up window
 	SDL_DestroyWindow(window);
@@ -129,6 +145,7 @@ int main( int argc, char* args[] )
 		else {
 			// A event variable to keep track of event
 			SDL_Event event;
+			currentImage = keyPressSurfaces[KEY_DEFAULT];
 			bool quit = false;
 			while (!quit) {
 				// Application event tracking, Handle event on queue.
@@ -137,9 +154,34 @@ int main( int argc, char* args[] )
 					if (event.type == SDL_QUIT) {
 						quit = true;
 					}
+					else if (event.type == SDL_KEYDOWN) {
+						// Pressed a Key
+						switch (event.key.keysym.sym) {
+							case SDLK_UP:
+								currentImage = keyPressSurfaces[KEY_UP];
+								break;
+
+							case SDLK_DOWN:
+								currentImage = keyPressSurfaces[KEY_DOWN];
+								break;
+
+							case SDLK_LEFT:
+								currentImage = keyPressSurfaces[KEY_LEFT];
+								break;
+
+							case SDLK_RIGHT:
+								currentImage = keyPressSurfaces[KEY_RIGHT];
+								break;
+
+							default:
+								currentImage = keyPressSurfaces[KEY_DEFAULT];
+								break;	
+						}
+					}
 				}
 				// Apply the image
-				SDL_BlitSurface(image, NULL, screenSurface, NULL);
+				SDL_BlitSurface(currentImage, NULL, screenSurface, NULL);
+				
 				/**
 					By LazyFoo :
 					By default, most rendering systems out there are double buffered. These two buffers are the front and back buffer.
