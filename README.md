@@ -12,10 +12,10 @@ This is a repository for holding my practicing code and demos of tiny games usin
 
 Why am I doing this:
 * I have some games made already and I want to create some tiny demos on my own. 🎲
-* I'd also like to know more about the basic of a game engine, which includes graphics and physics. 📖
-* I just want to create some games in my own pace. I found game jams are fun (I already did some) but I want to have something done w/o having an actual due date. 😄
+* I'd also like to know more about the basics of a game engine, which includes graphics and physics. 📖
+* I just want to create some games at my own pace. I found game jams are fun (I already did some) but I want to have something done w/out having an actual due date. 😄
 
-As you can see, this will be a ongoing project and will grow continusly as I learn more.
+As you can see, this will be an ongoing project and will grow continuously as I learn more.
 
 ## Built With
 
